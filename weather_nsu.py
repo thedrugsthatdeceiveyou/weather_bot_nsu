@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+import json
 import telebot
 import sys
 import datetime
@@ -21,21 +22,19 @@ def start(message):
 def send_weather_nsu(message):
     current_time = datetime.datetime.now()
     try:
-        usock = urllib.request.urlopen("http://weather.nsu.ru/weather.xml", data=None)
+        usock = urllib.request.urlopen("http://nsuweather.appspot.com/full", data=None)
     except:
         bot.send_message(message.chat.id, "Сайт лежит, подожди :)")
-        time.sleep(10)
         send_weather_nsu(message)
-
-    data = usock.read()
-    soup = BeautifulSoup(data, "lxml")
-    temperature_nsu = soup.find('current').text
-    usock.close()
-    temperature_to_message = "Температура около НГУ: " + temperature_nsu + " °C"
+        time.sleep(10)
+    nsu_json_string = usock.read()
+    nsu_json_dict= json.loads(nsu_json_string)
+    current_temperature_nsu = str(nsu_json_dict ['current'])
+    temperature_to_message = "Температура около НГУ: " + current_temperature_nsu + " °C"
     bot.send_message(message.chat.id, temperature_to_message)
-    #bot.send_message(241118222, 'да я тебя по айди вычислю!')
     output = codecs.open("D:\weather\logfile.txt", "a", "utf-8")
     output.write('\n' + separator + str(current_time) + separator + str(message.chat.id) + separator + '\n')
+    usock.close()
     output.close()
 def bot_launch():
     try:
