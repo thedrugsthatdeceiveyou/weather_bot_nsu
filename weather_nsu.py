@@ -17,11 +17,11 @@ def welcome(message):
     now_time = datetime.datetime.now()
     now_hour = now_time.hour
     if 6 <= now_hour < 12:
-        welcome_message = 'Доброе утро, ' + user_name
+        welcome_message = 'Доброе утро, ' + user_name + '\nХочешь узнать погоду? \nЖми /weather'
     elif 12 <= now_hour < 17:
-        welcome_message = 'Добрый день,' + user_name
+        welcome_message = 'Добрый день,' + user_name + '\nХочешь узнать погоду? \nЖми /weather'
     elif 17 <= now_hour < 23:
-        welcome_message = 'Добрый вечер, ' + user_name
+        welcome_message = 'Добрый вечер, ' + user_name + '\nХочешь узнать погоду? \nЖми /weather'
     sent = bot.send_message(message.chat.id, welcome_message)
 @bot.message_handler(commands=['help'])
 def start(message):
